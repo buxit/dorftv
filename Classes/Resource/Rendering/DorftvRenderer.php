@@ -3,11 +3,13 @@ namespace ChristianEssl\Youku\Resource\Rendering;
 
 /***
  *
- * This file is part of the "Youku" Extension for TYPO3 CMS.
+ * This file is part of the "Dorftv" Extension for TYPO3 CMS. Based on
+ * "Youku" extension by Christian Eßl.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
+ *  (c) 2021 till busch <buti@bux.at>, https://bux.at
  *  (c) 2019 Christian Eßl <indy.essl@gmail.com>, https://christianessl.at
  *
  ***/
@@ -21,9 +23,9 @@ use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Youku renderer class
+ * Dorftv renderer class
  */
-class YoukuRenderer implements FileRendererInterface
+class DorftvRenderer implements FileRendererInterface
 {
     /**
      * @var OnlineMediaHelperInterface
@@ -52,7 +54,7 @@ class YoukuRenderer implements FileRendererInterface
      */
     public function canRender(FileInterface $file)
     {
-        return ($file->getMimeType() === 'video/youku' || $file->getExtension() === 'youku') && $this->getOnlineMediaHelper($file) !== false;
+        return ($file->getMimeType() === 'video/' || $file->getExtension() === 'dorftv') && $this->getOnlineMediaHelper($file) !== false;
     }
 
     /**
@@ -90,7 +92,7 @@ class YoukuRenderer implements FileRendererInterface
     public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
     {
         $options = $this->collectOptions($options, $file);
-        $src = $this->createYoukuUrl($options, $file);
+        $src = $this->createDorftvUrl($options, $file);
         $attributes = $this->collectIframeAttributes($width, $height, $options);
 
         return sprintf(
@@ -129,22 +131,10 @@ class YoukuRenderer implements FileRendererInterface
      * @param FileInterface $file
      * @return string
      */
-    protected function createYoukuUrl(array $options, FileInterface $file)
+    protected function createDorftvUrl(array $options, FileInterface $file)
     {
         $videoId = $this->getVideoIdFromFile($file);
-
-        $urlParams = [];
-        if (!empty($options['autoplay'])) {
-            $urlParams[] = 'autoplay=true';
-        }
-        if (!empty($options['loop'])) {
-            $urlParams[] = 'loop=1';
-        }
-        $urlParams[] = 'title=' . (int)!empty($options['showinfo']);
-        $urlParams[] = 'byline=' . (int)!empty($options['showinfo']);
-        $urlParams[] = 'portrait=0';
-
-        return sprintf('https://player.youku.com/embed/%s?%s', $videoId, implode('&amp;', $urlParams));
+        return sprintf('https://dorftv.at/embed/%s', $videoId);
     }
 
     /**
