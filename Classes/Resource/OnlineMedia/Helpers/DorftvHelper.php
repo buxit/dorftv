@@ -24,7 +24,7 @@ class YoukuHelper extends AbstractOEmbedHelper
 {
 
     /** @var string */
-    protected $extension = 'youku';
+    protected $extension = 'dorftv';
 
     /**
      * Get public url
@@ -37,7 +37,7 @@ class YoukuHelper extends AbstractOEmbedHelper
     public function getPublicUrl(File $file, $relativeToCurrentScript = false)
     {
         $videoId = $this->getOnlineMediaId($file);
-        return sprintf('https://v.youku.com/v_show/id_%s', $videoId);
+        return sprintf('https://dorftv.at/video/%s', $videoId);
     }
 
     /**
@@ -49,7 +49,7 @@ class YoukuHelper extends AbstractOEmbedHelper
     public function getPreviewImage(File $file)
     {
         $videoId = $this->getOnlineMediaId($file);
-        $temporaryFileName = $this->getTempFolderPath() . 'youku_' . md5($videoId) . '.jpg';
+        $temporaryFileName = $this->getTempFolderPath() . 'dorftv_' . md5($videoId) . '.jpg';
 
         if (!file_exists($temporaryFileName)) {
             $oEmbedData = $this->getOEmbedData($videoId);
@@ -73,9 +73,7 @@ class YoukuHelper extends AbstractOEmbedHelper
     public function transformUrlToFile($url, Folder $targetFolder)
     {
         $videoId = null;
-        if (preg_match("#youku\.com/(?:player.php/sid/|v_show/id_)([a-zA-Z0-9]+)(?:/|\\.)#", $url, $matches) ||
-            preg_match("#id_(\w+)#", $url, $matches)
-        ) {
+        if (preg_match("#dorftv\.at/(video)/([a-zA-Z0-9]+)#", $url, $matches)) {
             $videoId = $matches[1];
         }
 
@@ -95,13 +93,13 @@ class YoukuHelper extends AbstractOEmbedHelper
      */
     protected function getOEmbedUrl($mediaId, $format = 'json')
     {
-        return 'https://v.youku.com/v_show/id_'.$mediaId.'.html';
+        return 'https://dorftv.at/embed/'.$mediaId;
     }
 
     /**
      * Get OEmbed data
      *
-     * Apparently youku.com does not provide an oEmbed API, but TYPO3 requires one.
+     * Does DorfTV provide an oEmbed API?
      * So we have to rely on this ugly solution to "fake" an oEmbed response.
      *
      * @param string $mediaId
@@ -110,14 +108,14 @@ class YoukuHelper extends AbstractOEmbedHelper
     protected function getOEmbedData($mediaId)
     {
         $html = GeneralUtility::getUrl(
-            $this->getOEmbedUrl($mediaId)
+            $this->getPublicUrl($mediaId)
         );
 
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
         $doc->loadHTML($html);
 
-        $title = 'Youku Video'; // Default value
+        $title = 'DorfTV Video'; // Default value
         $image = '';
 
         $metas = $doc->getElementsByTagName('meta');
@@ -135,7 +133,7 @@ class YoukuHelper extends AbstractOEmbedHelper
             'title' => $title,
             'width' => 480,
             'height' => 270,
-            'author_name' => 'Youku',
+            'author_name' => 'Dorftv',
             'thumbnail_url' => $image,
             'type' => 'video'
         ];
