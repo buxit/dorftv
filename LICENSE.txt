@@ -1,5 +1,6 @@
 ### Copyright notice
 
+> (c) 2021 Till Busch <https://bux.at>
 > (c) 2019 Christian Eßl <https://christianessl.at>
 > All rights reserved
 

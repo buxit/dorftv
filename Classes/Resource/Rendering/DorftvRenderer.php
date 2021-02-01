@@ -1,5 +1,5 @@
 <?php
-namespace ChristianEssl\Youku\Resource\Rendering;
+namespace TillBusch\Dorftv\Resource\Rendering;
 
 /***
  *

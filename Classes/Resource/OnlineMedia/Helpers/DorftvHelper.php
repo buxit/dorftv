@@ -1,9 +1,9 @@
 <?php
-namespace ChristianEssl\Youku\Resource\OnlineMedia\Helpers;
+namespace TillBusch\Dorftv\Resource\OnlineMedia\Helpers;
 
 /***
  *
- * This file is part of the "Youku" Extension for TYPO3 CMS.
+ * This file is part of the "Dorftv" Extension for TYPO3 CMS.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\AbstractOEmbedHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Youku helper class
+ * Dorftv helper class
  */
-class YoukuHelper extends AbstractOEmbedHelper
+class DorftvHelper extends AbstractOEmbedHelper
 {
 
     /** @var string */
@@ -73,7 +73,7 @@ class YoukuHelper extends AbstractOEmbedHelper
     public function transformUrlToFile($url, Folder $targetFolder)
     {
         $videoId = null;
-        if (preg_match("#dorftv\.at/(video)/([a-zA-Z0-9]+)#", $url, $matches)) {
+        if (preg_match("#dorftv\.at/video/([a-zA-Z0-9]+)#", $url, $matches)) {
             $videoId = $matches[1];
         }
 
@@ -100,16 +100,14 @@ class YoukuHelper extends AbstractOEmbedHelper
      * Get OEmbed data
      *
      * Does DorfTV provide an oEmbed API?
-     * So we have to rely on this ugly solution to "fake" an oEmbed response.
+     * Otherwise we have to rely on this ugly solution to "fake" an oEmbed response.
      *
      * @param string $mediaId
      * @return array|null
      */
     protected function getOEmbedData($mediaId)
     {
-        $html = GeneralUtility::getUrl(
-            $this->getPublicUrl($mediaId)
-        );
+        $html = GeneralUtility::getUrl('https://dorftv.at/video/'.$mediaId);
 
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);

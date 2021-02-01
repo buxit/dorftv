@@ -1,11 +1,11 @@
 {
-    "name": "christianessl/youku",
+    "name": "buxit/dorftv",
     "type": "typo3-cms-extension",
-    "description": "Online media provider for youku.com, chinas alternative to youtube.",
+    "description": "Online media provider for dorftv.at.",
     "keywords": [
         "TYPO3",
         "extension",
-        "youku",
+        "dorftv",
         "online media helper",
         "video",
         "fal"
@@ -13,7 +13,7 @@
     "license": ["GPL-2.0-or-later"],
     "authors": [
         {
-            "name": "Christian Essl",
+            "name": "till busch",
             "role": "Developer"
         }
     ],
@@ -23,16 +23,16 @@
     },
     "autoload": {
         "psr-4": {
-            "ChristianEssl\\Youku\\": "Classes"
+            "TillBusch\\Dorftv\\": "Classes"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ChristianEssl\\Youku\\Tests\\": "Tests"
+            "TillBusch\\Dorftv\\Tests\\": "Tests"
         }
     },
     "replace": {
-        "youku": "self.version",
-        "typo3-ter/youku": "self.version"
+        "dorftv": "self.version",
+        "typo3-ter/dorftv": "self.version"
     }
 }
